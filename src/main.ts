@@ -14,9 +14,17 @@ const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const STATE = process.env.STATE;
 const SCOPES = process.env.SCOPES?.split(" ");
+const TEST_USER_EMAIL = process.env.TEST_USER_EMAIL;
 
 // validate env variables
-if (!REDIRECT_URI || !CLIENT_ID || !CLIENT_SECRET || !STATE || !SCOPES) {
+if (
+  !REDIRECT_URI ||
+  !CLIENT_ID ||
+  !CLIENT_SECRET ||
+  !STATE ||
+  !SCOPES ||
+  !TEST_USER_EMAIL
+) {
   console.error("Missing env variables");
   process.exit(1);
 }
@@ -66,7 +74,6 @@ server.get(
     }
     let data = await spotifyApi.authorizationCodeGrant(code);
     let { access_token, refresh_token } = data.body;
-    console.log(data.body);
     // get user info
     spotifyApi.setAccessToken(access_token);
     spotifyApi.setRefreshToken(refresh_token);
@@ -178,6 +185,44 @@ server.get(
     }
     reply.type("text/html").code(200);
     return accessToken;
+  },
+);
+
+server.post(
+  "/registerDevice",
+  async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!request.body) {
+      reply.type("text/html").code(200);
+      return "No body provided";
+    }
+    let body = request.body as { pub_key: string; serial: string };
+    if (!body.pub_key || !body.serial) {
+      reply.type("text/html").code(200);
+      return "No pub_key or serial provided";
+    }
+    let { pub_key, serial } = body;
+    let device = await prisma.device.findUnique({
+      where: {
+        serial: serial,
+      },
+    });
+    if (!device) {
+      let updatedUser = await prisma.user.update({
+        where: {
+          email: TEST_USER_EMAIL,
+        },
+        data: {
+          devices: {
+            create: {
+              serial: serial,
+              pub_key: pub_key,
+            },
+          },
+        },
+      });
+    }
+    reply.type("text/html").code(200);
+    return "Success<br /><a href='/'>Go back</a>";
   },
 );
 
