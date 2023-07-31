@@ -1,5 +1,4 @@
 import SpotifyWebApi from "spotify-web-api-node";
-require("dotenv").config();
 
 const REDIRECT_URI = process.env.REDIRECT_URI;
 const CLIENT_ID = process.env.CLIENT_ID;
