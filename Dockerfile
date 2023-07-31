@@ -1,5 +1,5 @@
 # build stage
-FROM node:latest as build-stage
+FROM node:alpine as build-stage
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 
 # production stage
-FROM node:latest as production-stage
+FROM node:alpine as production-stage
 WORKDIR /app
 COPY --from=build-stage /app/dist /app
 COPY prisma /app/prisma
