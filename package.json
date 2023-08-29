@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && tsc",
-    "dev": "tsc-watch --onSuccess \"node -r dotenv/config ./dist/main.js "
+    "dev": "tsc-watch --onSuccess \"node -r dotenv/config ./dist/main.js ",
+    "prisma": "prisma generate"
   },
   "keywords": [],
   "author": "",

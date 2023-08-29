@@ -34,3 +34,8 @@ model Spotify {
   expiresAt    DateTime
   scope        String
 }
+
+model Show {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  events      String?
+}
