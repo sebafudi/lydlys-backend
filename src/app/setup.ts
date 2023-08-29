@@ -4,7 +4,7 @@ import { setupRoutes } from "../router/router";
 function setupAndRunApp() {
   const server = fastify();
   setupRoutes(server);
-  const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT || 3030;
   server.listen({ port: Number(PORT), host: "0.0.0.0" }, (err, address) => {
     if (err) {
       console.error(err);
