@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { prisma } from "../database/prisma";
+import { PrismaClient } from "@prisma/client";
 
 const handleGetShow = async (request: FastifyRequest, reply: FastifyReply) => {
   // Get the show ID from the URL
@@ -21,6 +22,14 @@ const getAllShows = async () => {
 };
 
 const handlePostShow = async (request: FastifyRequest, reply: FastifyReply) => {
+  await postShow(request, reply, prisma);
+};
+
+const postShow = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+  prisma: PrismaClient,
+) => {
   const body = request.body as { events: string };
   if (!body) {
     reply.status(400).send({ error: "No body provided" });
@@ -32,9 +41,7 @@ const handlePostShow = async (request: FastifyRequest, reply: FastifyReply) => {
     return;
   }
   const show = await prisma.show.create({
-    data: {
-      events,
-    },
+    data: { events },
   });
   reply.send(show);
 };
@@ -62,4 +69,4 @@ const handleDeleteShow = async (
   return;
 };
 
-export { handleGetShow, handlePostShow, handleDeleteShow };
+export { handleGetShow, handlePostShow, handleDeleteShow, postShow };
