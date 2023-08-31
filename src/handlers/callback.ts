@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { spotifyApi } from "../app/setupSpotify";
-import { prisma } from "../database/prisma";
+import prisma from "../database/client";
 
 type SpotifyAuthResponse = {
   code: string;

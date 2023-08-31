@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { prisma } from "../database/prisma";
+import prisma from "../database/client";
 
 const TEST_USER_EMAIL = process.env.TEST_USER_EMAIL;
 

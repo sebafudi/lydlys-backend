@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { spotifyApi } from "../app/setupSpotify";
-import { prisma } from "../database/prisma";
+import prisma from "../database/client";
 import crypto from "crypto";
 
 async function handleGetUserToken(
