@@ -8,6 +8,11 @@ import {
   handlePostShow,
   handleDeleteShow,
 } from "../handlers/show";
+import {
+  handleGetSongs,
+  handlePostSongs,
+  handleDeleteSongs,
+} from "../handlers/songs";
 
 function setupRoutes(fastify: FastifyInstance) {
   fastify.get("/", handleIndex);
@@ -19,6 +24,11 @@ function setupRoutes(fastify: FastifyInstance) {
   fastify.get("/show/:id", handleGetShow);
   fastify.post("/show", handlePostShow);
   fastify.delete("/show/:id", handleDeleteShow);
+
+  fastify.get("/songs", handleGetSongs);
+  fastify.get("/songs/:id", handleGetSongs);
+  fastify.post("/songs", handlePostSongs);
+  fastify.delete("/songs/:id", handleDeleteSongs);
 }
 
 export { setupRoutes };

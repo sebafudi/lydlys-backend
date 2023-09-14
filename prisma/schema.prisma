@@ -36,6 +36,31 @@ model Spotify {
 }
 
 model Show {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  events      String?
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  events String?
+  Song   Song[]
+}
+
+model Compiled {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  data Bytes
+  Song Song[]
+}
+
+model Song {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  compiled   Compiled? @relation(fields: [compiledId], references: [id])
+  compiledId String?   @db.ObjectId
+  show       Show?     @relation(fields: [showId], references: [id])
+  showId     String?   @db.ObjectId
+  Source     Source[]
+}
+
+model Source {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  type       String
+  externalId String?
+  url        String?
+  Song       Song?   @relation(fields: [songId], references: [id])
+  songId     String? @db.ObjectId
 }
