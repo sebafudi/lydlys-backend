@@ -36,31 +36,41 @@ model Spotify {
 }
 
 model Show {
-  id     String  @id @default(auto()) @map("_id") @db.ObjectId
-  events String?
-  Song   Song[]
-}
-
-model Compiled {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  data Bytes
-  Song Song[]
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  events       String?
+  songs        SongShow[]
+  CompiledShow CompiledShow[]
 }
 
 model Song {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  compiled   Compiled? @relation(fields: [compiledId], references: [id])
-  compiledId String?   @db.ObjectId
-  show       Show?     @relation(fields: [showId], references: [id])
-  showId     String?   @db.ObjectId
-  Source     Source[]
+  id      String       @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  artist  String
+  shows   SongShow[]
+  sources SongSource[]
 }
 
-model Source {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
-  type       String
-  externalId String?
-  url        String?
-  Song       Song?   @relation(fields: [songId], references: [id])
-  songId     String? @db.ObjectId
+model SongShow {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  song   Song   @relation(fields: [songId], references: [id])
+  songId String @db.ObjectId
+  show   Show   @relation(fields: [showId], references: [id])
+  showId String @db.ObjectId
+}
+
+model SongSource {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  song     Song   @relation(fields: [songId], references: [id])
+  songId   String @db.ObjectId
+  source   String
+  sourceId String
+  offset   Int
+}
+
+model CompiledShow {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  show   Show   @relation(fields: [showId], references: [id])
+  showId String @db.ObjectId
+  ledNum Int
+  file   String
 }
